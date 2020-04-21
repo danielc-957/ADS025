@@ -1,37 +1,111 @@
-1. Aplique a 1FN, 2FN e 3FN para cada tabela não normalizada.
+3)a-
 
-a) Projeto (numero_empregado, nome_empregado, numero_depto, nome_depto, numero_gerente, nome_gerente, numero_projeto, nome_projeto, data_inicio_projeto, horas_trabalhadas_projeto).
+1FN
+1,JOSE, 22, RH, 3, MARIA, 10, X, 26/03/2020,100
+2,CHICO, 22, RH, 3, MARIA, 10, X, 26/03/2020,10
+3,JOAO, 20, FINANCEIRO, 3, MARIA, 10, X, 26/03/2020,50
 
-Chave(s): numero_projeto
-Dependência(s): numero_projeto -> nome_projeto, data_inicio_projeto, numero_gerente, nome_gerente                
-                numero_empregado -> nome_empregado, numero_depto, nome_depto, horas_trabalhadas_projeto
-                numero_depto -> nome_depto
-                numero_gerente -> nome_gerente
+Projeto(numero_projeto*,nome_projeto,data_inicio_projeto,numero_gerente,nome_gerente)
+Projeto_Empregado(numero_projeto*, numero_empregado*,nome_empregado,numero_dpto,nome_dpto,horas_trabalhadas_projeto)
 
-b) Pedido (cod_pedido, dat_emissao, cod_fornecedor, nom_fornecedor, end_fornecedor, cod_material, dsc_material, qtd_pedido, vlr_unitario, vl_total_material, vlr_total_pedido).
+2FN
+Projeto(numero_projeto*,nome_projeto,data_inicio_projeto,numero_gerente,nome_gerente)
+Projeto_Empregado(numero_projeto*,numero_empregado*,horas_trabalhadas_projeto)
+Empregado(numero_empregado*, nome_empregado,numero_departamento, nome_departamento)
 
-Chave(s): cod_pedido
-Dependência(s): cod_pedido -> dat_emissao, cod_fornecedor, nom_fornecedor, end_fornecedor, vlr_total_pedido
-                {cod_pedido, cod_material} -> qtd_pedido, vl_total_material
-                cod_material -> dsc_material, vlr_unitario 
-                cod_fornecedor -> nom_fornecedor, end_fornecedor
+3FN
+Projeto(numero_projeto*,nome_projeto,data_inicio_projeto,numero_gerente)
+Gerente(numero_gerente*,nome_gerente)
+Projeto_empregado(numero_projeto*,numero_empregado*,horas_trabalhadas_projeto)
+Empregado(numero_empregado*,nome_empregado, numero_depto)
+Departamento(numero_depto*,nome_depto)
 
-c) Turma (codigo_aluno, nome_aluno, email_aluno, fone_contato, cod_curso, nome_curso, data_matricula).
 
-Chaves(s): codigo_aluno, codigo_curso
-Dependência(s): codigo_aluno -> nome_aluno, email_aluno, fone_contato
-                cod_curso -> nome_curso
 
-d) Consulta (num_paciente, nome_paciente, data_consulta, dsc_diagnostico, cod_medico, nome_medico, cod_especialidade, dsc_especialidade).
 
-Chaves(s): num_paciente, data_consulta, cod_medico
-Dependência(s): num_paciente -> nome_paciente
-                cod_medico -> nome_medico, cod_especialidade, dsc_especialidade
-                cod_especialidade -> dsc_especialidade
-                                                                                                   
-e) Emprestimo (num_matricula, nom_aluno, num_isbn, tit_livro, dat_emprestimo, dat_devolucao, num_paginas, cod_editora, nom_editora)
+3)b-
 
-Chaves(s): num_matricula, num_isbn, dat_emprestimo
-Dependência(s): num_matricula -> nom_aluno
-                num_isbn -> tit_livro, num_paginas, cod_editora, nom_editora
-                cod_editora -> nom_editora
+1FN
+1,25/03/2020,5,PLASTICO_INC,RUA FARIALIMA-23,10,CARRINHO,50,2.5,200,250.5
+2,25/03/2020,5,PLASTICO_INC,RUA FARIALIMA-23,20	BOLA,70,2,120,250.5
+3,25/03/2020,5,PLASTICO_INC,RUA FARIALIMA-23,30	BONECA,90,1.5,100,250.5
+
+Fornecedor(cod_pedido*,dat_emissao,cod_fornecedor,nom_fornecedor,end_fornecedor,vlr_total_pedido)
+Pedido(cod_pedido*,cod_material*,desc_material,qtd_pedido,vlr_unitario,vlr_total_material)
+
+2FN
+Fornecedor(cod_pedido*,dat_emissao,cod_fornecedor,nom_fornecedor,end_fornecedor,vlr_total_pedido)
+Pedido(cod_pedido*,cod_material*,qtd_pedido,vlr_total_material)
+Material(cod_material*,dsc_material,vlr_unitario)
+
+3FN
+Fornecedor(cod_pedido*,dat_emissao,cod_fornecedor,vlr_total_pedido)
+Pedido(cod_pedido*,cod_material*,qtd_pedido,vlr_total_material)
+Material(cod_material*,dsc_material,vlr_unitario)
+Endereco_fornecedor(cod_fornecedor*,nom_fornecedor,end_fornecedor)
+
+
+
+
+3)c-
+
+1FN/2FN e 3FN
+1,MANUEL,MANUEL@EMAIL.COM,33523535,4,BANCO_DE_DADOS,12/05/2018
+2,SAMUEL,SAMUEL@EMAIL.COM,94478565,4,BANCO_DE_DADOS,13/06/2019
+3,DANIEL,DANIEL@EMAIL.COM,12345678,4,BANCO_DE_DADOS,14/07/2020
+
+Curso (cod_curso*, nome_curso)
+Turma (codigo_aluno*, codigo_curso*, email_aluno, fone_contato, nome_aluno, data_matricula)
+
+
+
+
+3)d-
+
+1FN
+1,ANDRE,15/03/2020,DOR_DE_CABECA,3,MARCELA,5,CLINICO
+2,JOSIAS,14/02/2019,VOMITO,3,MARCELA,5,CLINICO
+3,MARIA,13/03/2020,NAUSEAS,3,MARCELA,5,CLINICO
+
+Consulta (num_paciente*, data_consulta*,cod_medico*,dsc_diagnostico,nome_paciente)
+Medico (cod_medico*, nome_medico, cod_especialidade, dsc_espcialidade)
+
+2FN
+Paciente (num_paciente*, nome_paciente)
+Medico (cod_medico*, nome_medico, cod_especialidade, dsc_especialidade)
+Consulta (num_paciente*, data_consulta*, cod_medico*, dsc_diagnostico)
+
+3FN
+Paciente (num_paciente*, nome_paciente)
+Medico (cod_medico*, nome_medico, cod_especialidade)
+Especialidade (cod_especialidade*, dsc_especialidade)
+Consulta(num_paciente*, data_consulta*, cod_medico*, dsc_diagnostico)
+
+
+
+
+3)e-
+
+1FN
+1, ALEX, 4, NARNIA, 12/03/2020, 25/03/2020, 250, 100, CATALINA ED.
+2, LUNA, 4, NARNIA, 25/02/2019, 10/03/2019, 250, 100, CATALINA ED.
+3, JANIRA, 4, NARNIA, 30/01/2019, 20/02/2019, 250, 100,	CATALINA ED.
+
+Emprestimo (num_matricula*, dat_emprestimo*, num_isbn*, nome_aluno, dat_devolucao)
+Isbn (num_isbn*, tit_livro, num_paginas, cod_editora, nome_editora)
+
+2FN
+Emprestimo (num_matricula*,dat_emprestimo*,num_isbn*, dat_devolucao)
+Aluno (num_matricula*, nom_aluno)
+Isbn (num_isbn*, tit_livro, num_paginas, cod_editora, nome_editora)
+
+3FN
+Emprestimo (num_matricula*,dat_emprestimo*,num_isbn*, dat_devolucao)
+Aluno (num_matricula*, nom_aluno)
+Isbn (num_isbn*, tit_livro, num_paginas, cod_editora)
+Editora (cod_editora*, nome_editora)
+
+
+
+
+
