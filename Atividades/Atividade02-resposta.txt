@@ -1,0 +1,21 @@
+2)a)PI nome_professor, titulacao_professor (Professor)
+
+b) PI id_aluno, num_faltas, media_final(SIGMA turma=1(Historico))
+
+c) PI num_periodo, num_sala(SIGMA id_disciplima = ADS025(Turma))
+
+d) PI id_aluno (Historico Join (SIGMA id_professor = 3506 (Turma)))
+
+e) PI aluno.nome_aluno, turma.id_periodo, disciplina.nome_disciplina, historico.num_faltas, historico.media_final (((SIGMA id_aluno =  199839550 (Historico) Join Aluno) join Turma) join disciplina)
+
+f) PI id_aluno((SIGMA media_final=NULL(Historico)) e (Disciplina Join (SIGMA id_disciplina= ADS025)))
+
+g) PI id_turma((SIGMA id_professor = 3056(Turma) UNIAO (Turma Join (SIGMA id_aluno = 199839550(Historico))))
+
+h) PI id_turma(SIGMA id_professor <> 3056 (Turma))
+
+obs.: <> é o mesmo que diferente (ou !=)
+
+i) PI nome_aluno(join Aluno(SIGMA id_disciplina <> NULL (Disciplina)))
+
+j) PI id_aluno( (SIGMA num_faltas <  25%) INTERSECCAO  (SIGMA media_final >5 ), (Historico))
