@@ -1,0 +1,162 @@
+5) a-
+CREATE TABLE DEPARTAMENTO(
+  numero_depto INT NOT NULL,
+  nome_depto VARCHAR(100) NOT NULL,
+  PRIMARY KEY (numero_depto));
+
+CREATE TABLE GERENTE (
+  numero_gerente INT NOT NULL,
+  nome_gerente VARCHAR(100) NOT NULL,
+  PRIMARY KEY (numero_gerente));
+
+CREATE TABLE  PROJETO (
+  numero_projeto INT NOT NULL,
+  nome_projeto VARCHAR(100) NOT NULL,
+  data_inicio_projeto DATE NOT NULL,
+  numero_gerente INT NOT NULL,
+  PRIMARY KEY (numero_projeto),
+  FOREIGN KEY (numero_gerente)
+  REFERENCES GERENTE (numero_gerente));
+
+CREATE TABLE EMPREGADO (
+  numero_empregado INT NOT NULL,
+  nome_empregado VARCHAR(100) NOT NULL,
+  numero_depto INT NOT NULL,
+  PRIMARY KEY ( numero_empregado ),
+  FOREIGN KEY ( numero_depto )
+  REFERENCES DEPARTAMENTO ( numero_depto ));
+
+CREATE TABLE PROJETO_EMPREGADO (
+  numero_projeto INT NOT NULL,
+  numero_empregado INT NOT NULL,
+  horas_trabalhadas_projeto SMALLINT(DEFAULT 0),
+  PRIMARY KEY ( numero_projeto, numero_empregado ),
+  FOREIGN KEY ( numero_projeto )
+  REFERENCES PROJETO ( numero_projeto ),
+  FOREIGN KEY ( numero_empregado )
+  REFERENCES EMPREGADO ( numero_empregado ));
+---------------------------------------------------------------------------------------------------------------------
+
+b-
+CREATE TABLE FORNECEDOR (
+  cod_fornecedor INT NOT NULL AUTO_INCREMENT,
+  nom_fornecedor VARCHAR(100) NOT NULL,
+  end_fornecedor VARCHAR(100) NULL,
+  PRIMARY KEY ( cod_fornecedor ));
+
+CREATE TABLE MATERIAL (
+  cod_material INT NOT NULL AUTO_INCREMENT,
+  dsc_material VARCHAR(100) NOT NULL,
+  vlr_unitario DECIMAL(12,2) NOT NULL,
+  PRIMARY KEY ( cod_material ));
+
+CREATE TABLE PEDIDO (
+  cod_pedido INT NOT NULL AUTO_INCREMENT,
+  dat_emissao DATE NOT NULL,
+  cod_fornecedor INT NOT NULL,
+  vlr_total_pedido DECIMAL(12,2) DEFAULT 0,
+  PRIMARY KEY (cod_pedido),
+  FOREIGN KEY ( cod_fornecedor )
+  REFERENCES FORNECEDOR ( cod_fornecedor ));
+
+CREATE TABLE PEDIDO_MATERIAL (
+  cod_pedido INT NOT NULL, 
+  cod_material INT NOT NULL,
+  qtde_material  SMALLINT(0) NOT NULL CHECK > 0,
+  vlr_material  DECIMAL(12,2) NOT NULL,
+  PRIMARY KEY ( cod_pedido, cod_material),
+  FOREIGN KEY (cod_pedido)
+  REFERENCES PEDIDO ( cod_pedido ),
+  FOREIGN KEY ( cod_material )
+  REFERENCES MATERIAL ( cod_material ));
+---------------------------------------------------------------------------------------------------------------------------
+
+c-
+CREATE TABLE CURSO (
+  id_curso INT NOT NULL AUTO_INCREMENT,
+  nome_curso VARCHAR(100) NOT NULL,
+  carga_horaria SMALLINT,
+  PRIMARY KEY ( id_curso ));
+
+CREATE TABLE  ALUNO (
+  id_aluno INT NOT NULL AUTO_INCREMENT,
+  nome_aluno VARCHAR(100) NOT NULL,
+  email_aluno VARCHAR(100),
+  fone_contato CHAR(14),
+  PRIMARY KEY ( id_aluno ));
+
+CREATE TABLE TURMA (
+  id_turma INT NOT NULL AUTO_INCREMENT,
+  id_curso INT NOT NULL,
+  id_aluno INT NOT NULL,
+  data_matricula DATE NOT NULL,
+  PRIMARY KEY ( id_turma ),
+  FOREIGN KEY ( id_curso )
+  REFERENCES CURSO ( id_curso ),
+  FOREIGN KEY ( id_aluno )
+  REFERENCES ALUNO ( id_aluno ));
+-------------------------------------------------------------------------------------------------------------------
+
+d-
+CREATE TABLE ESPECIALIDADE (
+  cod_especialidade INT NOT NULL,
+  dsc_especialidade VARCHAR(100) NOT NULL,
+  PRIMARY KEY ( cod_especialidade ));
+
+CREATE TABLE MEDICO (
+  cod_medico  INT AUTO_INCREMENT,
+  nome_medico  VARCHAR(100) NOT NULL,
+  cod_especialidade  INT NOT NULL,
+  PRIMARY KEY ( cod_medico ),
+  FOREIGN KEY ( cod_especialidade )
+  REFERENCES ESPECIALIDADE ( cod_especialidade ));
+
+CREATE  TABLE PACIENTE (
+  id_paciente INT NOT NULL AUTO_INCREMENT,
+  nome_paciente VARCHAR(100) NOT NULL,
+  PRIMARY KEY ( id_paciente ));
+
+CREATE TABLE CONSULTA (
+  id_consulta INT NOT NULL AUTO_INCREMENT,
+  cod_medico INT NOT NULL,
+  id_paciente INT NOT NULL,
+  data_consulta DATE NOT NULL,
+  PRIMARY KEY ( id_consulta ),
+  FOREIGN KEY ( cod_medico)
+  REFERENCES MEDICO ( cod_medico ),
+  FOREIGN KEY (id_paciente)
+  REFERENCES PACIENTE ( id_paciente ));
+-------------------------------------------------------------------------------------------------------------------
+e-
+CREATE TABLE EDITORA (
+  cod_editora INT NOT NULL AUTO_INCREMENT,
+  nome_editora  VARCHAR(100) NOT NULL,
+  PRIMARY KEY (cod_editora));
+
+CREATE TABLE LIVRO (
+  id_livro INT NOT NULL AUTO_INCREMENT,
+  num_isbn CHAR(13) NOT NULL UNIQUE,
+  tit_livro VARCHAR(100) NOT NULL,
+  num_paginas SMALLINT CHECK > 0 ,
+  cod_editora INT NOT NULL,
+  PRIMARY KEY ( id_livro ),
+  FOREIGN KEY ( cod_editora )
+  REFERENCES EDITORA (cod_editora ));
+
+CREATE TABLE ALUNO (
+  id_aluno INT NOT NULL AUTO_INCREMENT,
+ num_matricula INT NOT NULL UNIQUE,
+ nom_aluno VARCHAR(100) NOT NULL,
+ PRIMARY KEY ( id_aluno ));
+
+CREATE TABLE EMPRESTIMO(
+  id_emprestimo INT NOT NULL AUTO_INCREMENT,
+  id_livro INT NOT NULL,
+  id_aluno INT NOT NULL,
+  dat_emprestimo DATE NOT NULL,
+  dat_devolucao DATE,
+  PRIMARY KEY ( id_emprestimo ),
+  FOREIGN KEY ( id_livro )
+  REFERENCES LIVRO ( id_livro ),
+  FOREIGN KEY ( id_aluno )
+  REFERENCES ALUNO ( id_aluno ));
