@@ -1,0 +1,99 @@
+6)b-
+Comando:
+insert into aluno values(1);
+Retorno:
+Error Code: 1136. Column count doesn't match value count at row 1
+
+
+c-
+Comando:
+insert into aluno values(1,"JOSE"),(2,"MARIA"),(3,"BRUNO"),(4,"CARLA"),(5,"PEDRO");
+Retorno:
+5 row(s) affected Records: 5  Duplicates: 0  Warnings: 0
+
+
+d-
+Comando:
+insert into disciplina values(1, "BANCO DE DADOS I", -1);
+Retorno:
+Error Code: 4025. CONSTRAINT `disciplina.carga_horaria` failed for `academico`.`disciplina`
+
+
+e-
+Comando:
+insert into disciplina values(1,"BANCO DE DADOS I", 60),(2,"BANCO DE DADOS II",60);
+Retorno:
+2 row(s) affected Records: 2  Duplicates: 0  Warnings: 0
+
+
+f-
+Comando: 
+insert into professor values(1,"LETICIA","GRADUADA"),(2,"JOSE REGINALDO","POS_GRADUADO");
+Retorno:
+2 row(s) affected Records: 2  Duplicates: 0  Warnings: 0
+
+
+g-
+Comando:
+insert into turma values(1,20192,null,null,null,null);
+Retorno:
+1 row(s) returned
+
+h- 
+Comando:
+insert into turma values(1,20201,null,null,null,null);
+Retorno:
+Error Code: 1062. Duplicate entry '1' for key 'PRIMARY'
+
+i-
+Comando:
+insert into turma values(2,20201,3,null,null,null);
+Retorno: 
+Error Code: 1452. Cannot add or update a child row: a foreign key constraint fails (`academico`.`turma`, CONSTRAINT `turma_ibfk_1` FOREIGN KEY (`id_professor`) REFERENCES `professor` (`id_professor`) ON DELETE CASCADE)
+j-
+Comando:
+insert into turma values(3,20201,1,1,null,null),(4,20202,2,2,null,null);
+Retorno:
+2 row(s) affected Records: 2  Duplicates: 0  Warnings: 0
+
+k-
+Comando:
+ insert into historico values (1,1,1,null,null), (2,1,2,null,null), (3,1,3,null,null), (4,1,4,null,null), (5,3,1,null,null), (6,3,2,null,null), (7,4,3,null,null), (8,4,4,null,null);
+Retorno:
+8 row(s) affected Records: 8  Duplicates: 0  Warnings: 0
+
+l-
+Comando:
+update aluno set nome_aluno="JOAO" where id_aluno=1; 
+Retorno: 
+1 row(s) affected Rows matched: 1  Changed: 1  Warnings: 0
+
+m-
+Comando:
+update disciplina set id_disciplina=3 where id_disciplina=1;
+Retorno:  
+Error Code: 1451. Cannot delete or update a parent row: a foreign key constraint fails (`academico`.`turma`, CONSTRAINT `turma_ibfk_2` FOREIGN KEY (`id_disciplina`) REFERENCES `disciplina` (`id_disciplina`))
+
+n-
+Comando:
+update historico set media_final=5 where id_turma=4;
+Retorno:
+2 row(s) affected Rows matched: 2  Changed: 2  Warnings: 0
+
+o-
+Comando:
+delete from aluno where id_aluno=5;
+Retorno:
+1 row(s) affected
+
+p-
+Comando: 
+delete from disciplina where id_disciplina= 2;
+Retorno: 
+Error Code: 1451. Cannot delete or update a parent row: a foreign key constraint fails (`academico`.`turma`, CONSTRAINT `turma_ibfk_2` FOREIGN KEY (`id_disciplina`) REFERENCES `disciplina` (`id_disciplina`))
+
+q-
+Comando:
+delete from professor where id_professor= 2; 
+Retorno: 
+1 row(s) affected
