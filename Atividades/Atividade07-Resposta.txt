@@ -1,0 +1,130 @@
+7-a
+Comando: 
+select nome_professor from professor;
+
+Retorno: 
+1 row(s) returned
+
+Tabela: 
+nome_professor (LETICIA)
+--------------------------------------------------------------------------------------------------------------------------
+b-
+Comando:
+select nome_aluno from aluno where nome_aluno like "%A";
+
+Retorno:
+2 row(s) returned 
+
+Tabela:
+nome_aluno (MARIA, CARLA)
+--------------------------------------------------------------------------------------------------------------------------
+c-
+Comando: 
+select id_aluno, num_faltas, media_final from historico where id_turma=1;
+
+Retorno:
+4 row(s) returned
+
+Tabela: 
+# id_aluno, num_faltas, media_final
+'1', '4', '7.0'
+'2', '2', '5.0'
+'3', '2', '4.0'
+'4', '7', '8.0'
+--------------------------------------------------------------------------------------------------------------------------
+d-
+Comando:
+select id_aluno from historico where id_turma=3;
+
+Retorno: 
+2 row(s) returned
+
+Tabela: 
+# id_aluno
+'1'
+'2'
+--------------------------------------------------------------------------------------------------------------------------
+e-	
+Comando:
+select a.id_aluno, a.nome_aluno 
+from aluno as a 
+join historico as h on a.id_aluno = h.id_aluno where h.media_final>=5;
+
+Retorno:
+3 row(s) returned 
+
+Tabela: 
+# id_aluno, nome_aluno
+'1', 'JOAO'
+'2', 'MARIA'
+'4', 'CARLA'
+--------------------------------------------------------------------------------------------------------------------------
+f-
+Comando:
+select n.nome_aluno from aluno as n
+join historico as h on n.id_aluno=h.id_aluno where id_turma=1 order by n.nome_aluno; 
+
+Retorno:
+ 4 row(s) returned
+
+Tabela: 
+# nome_aluno
+'BRUNO'
+'CARLA'
+'JOAO'
+'MARIA'
+--------------------------------------------------------------------------------------------------------------------------
+g-
+Comando:
+select d.nome_disciplina from disciplina as d
+join turma as t on d.id_disciplina = t.id_disciplina
+join professor as p on t.id_professor=p.id_professor where p.nome_professor <> "LETICIA";
+
+Retorno:
+1 row(s) returned 
+
+Tabela: 
+# nome_disciplina
+'BANCO DE DADOS II'
+--------------------------------------------------------------------------------------------------------------------------
+h-
+Comando: 
+SELECT t.num_periodo, AVG (h.media_final) from historico as h 
+join turma as t on t.id_turma = h.id_turma
+group by t.id_turma;
+
+Retorno: 
+2 row(s) returned
+
+Tabela: 
+# num_periodo, AVG (h.media_final)
+'20192', '5.85000'
+'20201', '4.25000'
+--------------------------------------------------------------------------------------------------------------------------
+i-
+Comando:
+select t.num_periodo, count(h.id_aluno) from historico as h
+join turma as t on h.id_turma=t.id_turma group by t.num_periodo;
+
+Retorno: 
+2 row(s) returned
+Tabela: 
+# num_periodo, count(h.id_aluno)
+'20192', '4'
+'20201', '2'
+--------------------------------------------------------------------------------------------------------------------------
+j-
+Comando:
+select a.id_aluno, a.nome_aluno from aluno as a 
+join historico as h on a.id_aluno=h.id_aluno where h.id_turma=1
+INTERSECT
+select a.id_aluno, a.nome_aluno from aluno as a 
+join historico as h on a.id_aluno=h.id_aluno where h.id_turma=3; 
+
+Retorno: 
+2 row(s) returned
+
+Tabela: 
+# id_aluno, nome_aluno
+'1', 'JOAO'
+'2', 'MARIA'
