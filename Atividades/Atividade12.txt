@@ -131,4 +131,3 @@ o) Exclua o aluno PEDRO. Qual foi o resultado?
 p) Exclua a disciplina BANCO DE DADOS II. Qual foi o resultado?
 
 q) Exclua o professor JOSE REGINALDO. Qual foi o resultado?
-
