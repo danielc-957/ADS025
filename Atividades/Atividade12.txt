@@ -1,7 +1,7 @@
 1. Crie um banco de dados chamado academico no MongoDB.
 
 db.createCollection("aluno", {
-  $validator: {
+  validator: {
     $jsonSchema: {
        bsonType: "object",
        required: ["nome"],
@@ -10,10 +10,10 @@ db.createCollection("aluno", {
        }
     }
   }
-);
+});
 
 db.createCollection("disciplina", {
-  $validator: {
+  validator: {
     $jsonSchema: {
        bsonType: "object",
        required: ["nome"],
@@ -23,10 +23,10 @@ db.createCollection("disciplina", {
        }
     }
   }
-);
+});
 
 db.createCollection("professor", {
-  $validator: {
+  validator: {
     $jsonSchema: {
        bsonType: "object",
        required: ["nome", "titulacao"],
@@ -36,10 +36,10 @@ db.createCollection("professor", {
        }
     }
   }
-);
+});
 
 db.createCollection("turma", {
-  $validator: {
+  validator: {
     $jsonSchema: {
        bsonType: "object",
        required: ["numPeriodo"],
@@ -51,10 +51,10 @@ db.createCollection("turma", {
        }
     }
   }
-);
+});
 
 db.createCollection("historico", {
-  $validator: {
+  validator: {
     $jsonSchema: {
        bsonType: "object",
        required: ["idTurma, idAluno"],
@@ -66,7 +66,7 @@ db.createCollection("historico", {
        }
     }
   }
-);
+});
 
 
 
