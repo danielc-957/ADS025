@@ -4,45 +4,45 @@ db.createCollection("aluno", {
   validator: {
     $jsonSchema: {
        bsonType: "object",
-       required: ["nome"]
+       required: ["nome"],
        properties: {
-          name: { bsonType: "string", description: "deve ser uma string e obrigatorio" }
+          nome: { bsonType: "string", description: "deve ser uma string e obrigatorio" }
        }
     }
   }
-);
+});
 
 db.createCollection("disciplina", {
   validator: {
     $jsonSchema: {
        bsonType: "object",
-       required: ["nome"]
+       required: ["nome"],
        properties: {
-          name: { bsonType: "string", description: "deve ser uma string e obrigatorio" },
-	  cargaHoraria : { bsonType: "int", minimum: 0 "description: "deve ser um inteiro maior igual a 0" }
+          nome: { bsonType: "string", description: "deve ser uma string e obrigatorio" },
+	  cargaHoraria : { bsonType: "int", minimum: 0, description: "deve ser um inteiro maior igual a 0" }
        }
     }
   }
-);
+});
 
 db.createCollection("professor", {
   validator: {
     $jsonSchema: {
        bsonType: "object",
-       required: ["nome", "titulacao"]
+       required: ["nome", "titulacao"],
        properties: {
-          name: { bsonType: "string", description: "deve ser uma string e obrigatorio" },
+          nome: { bsonType: "string", description: "deve ser uma string e obrigatorio" },
           titulacao: { bsonType: "string", description: "deve ser uma string e obrigatorio" },
        }
     }
   }
-);
+});
 
 db.createCollection("turma", {
   validator: {
     $jsonSchema: {
        bsonType: "object",
-       required: ["numPeriodo"]
+       required: ["numPeriodo"],
        properties: {
          idProfessor: { bsonType: "objectId", description: "deve ser um objectId" },
 	 idDisciplina: { bsonType: "objectId", description: "deve ser um objectId" },
@@ -51,13 +51,13 @@ db.createCollection("turma", {
        }
     }
   }
-);
+});
 
 db.createCollection("historico", {
   validator: {
     $jsonSchema: {
        bsonType: "object",
-       required: ["idTurma, idAluno"]
+       required: ["idTurma, idAluno"],
        properties: {
          idTurma: { bsonType: "objectId", description: "deve ser um objectId" },
 	 idAluno: { bsonType: "objectId", description: "deve ser um objectId" },
@@ -66,7 +66,7 @@ db.createCollection("historico", {
        }
     }
   }
-);
+});
 
 
 
@@ -131,4 +131,3 @@ o) Exclua o aluno PEDRO. Qual foi o resultado?
 p) Exclua a disciplina BANCO DE DADOS II. Qual foi o resultado?
 
 q) Exclua o professor JOSE REGINALDO. Qual foi o resultado?
-
