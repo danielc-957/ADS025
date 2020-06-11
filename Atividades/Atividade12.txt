@@ -19,7 +19,7 @@ db.createCollection("disciplina", {
        required: ["nome"],
        properties: {
           nome: { bsonType: "string", description: "deve ser uma string e obrigatorio" },
-	  cargaHoraria : { bsonType: "int", minimum: 0 "description: "deve ser um inteiro maior igual a 0" }
+	  cargaHoraria : { bsonType: "int", minimum: 0, description: "deve ser um inteiro maior igual a 0" }
        }
     }
   }
