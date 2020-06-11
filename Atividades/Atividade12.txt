@@ -6,7 +6,7 @@ db.createCollection("aluno", {
        bsonType: "object",
        required: ["nome"],
        properties: {
-          name: { bsonType: "string", description: "deve ser uma string e obrigatorio" }
+          nome: { bsonType: "string", description: "deve ser uma string e obrigatorio" }
        }
     }
   }
@@ -18,7 +18,7 @@ db.createCollection("disciplina", {
        bsonType: "object",
        required: ["nome"],
        properties: {
-          name: { bsonType: "string", description: "deve ser uma string e obrigatorio" },
+          nome: { bsonType: "string", description: "deve ser uma string e obrigatorio" },
 	  cargaHoraria : { bsonType: "int", minimum: 0 "description: "deve ser um inteiro maior igual a 0" }
        }
     }
@@ -31,7 +31,7 @@ db.createCollection("professor", {
        bsonType: "object",
        required: ["nome", "titulacao"],
        properties: {
-          name: { bsonType: "string", description: "deve ser uma string e obrigatorio" },
+          nome: { bsonType: "string", description: "deve ser uma string e obrigatorio" },
           titulacao: { bsonType: "string", description: "deve ser uma string e obrigatorio" },
        }
     }
