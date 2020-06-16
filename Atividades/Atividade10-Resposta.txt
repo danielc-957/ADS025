@@ -1,0 +1,180 @@
+Atividade 10
+Respostas:
+
+10- Crie o modelo NoSQL orientado a documentos para os seguintes modelos relacionais.
+
+a) 
+Projeto (numero_projeto*, nome_projeto, data_inicio_projeto, numero_gerente)
+Projeto_Empregado (numero_projeto*, numero_empregado*, horas_trabalhadas_projeto)
+Empregado (numero_empregado*, nome_empregado, numero_depto)
+Gerente (numero_gerente*, nome_gerente)
+Departamento (numero_depto*, nome_depto)
+
+Resposta: 
+Várias coleções
+
+{projeto : {
+    id: 1,
+    numero_projeto: 111,
+    nome_projeto: "Super projeto",
+    data_inicio_projeto: "15/05/2020",
+    gerente: 4 
+}}
+{projeto_empregado : {
+    id: 2,
+    projeto: 1,
+    empregado: 3,
+    horas_trabalhadas_projeto: 390
+}}
+{empregado : {
+    id: 3,
+    numero_empregado: 2211,
+    nome_empregado: "Jurandir",
+    departamento: 5
+}}
+{gerente : {
+    id: 4,
+    numero_gerente: 332,
+    nome_gerente: "Larissa"
+}}
+{departamento : {
+    id: 5,
+    numero_depto: 278,
+    nome_depto: "departamento medico"
+}}
+
+
+
+b)
+Pedido (cod_pedido*, dat_emissao, cod_fornecedor, vlr_total_pedido)
+Pedido_Material (cod_pedido*, cod_material*, qtd_pedido, vlr_total_material)
+Material (cod_material*, dsc_material, vlr_unitario),
+Fornecedor (cod_fornecedor*, nom_fornecedor, end_fornecedor)
+
+Resposta: 
+Várias coleções
+
+{pedido : {
+    id: 1,
+    cod_pedido: 123,
+    dat_emissao: "13/02/2020",
+    fornecedor: 4,
+    vlr_total_pedido: "R$ 10,00"
+}}
+
+{pedido_material : {
+    id: 2,
+    pedido: 1,
+    material: 3,
+    qtd_pedido: 2,
+    vlr_total_material: "R$5,00"
+}}
+
+{material : {
+    id: 3,
+    cod_material: 11,
+    dsc_material: "caderno",
+    vlr_unitario: "R$5,00"
+}}
+{fornecedor : {
+    id: 4,
+    cod_fornecedor: 222,
+    nom_fornecedor: "Cardernies LTDA",
+    end_fornecedor: "Rua canário LT 12"
+}}
+
+c)
+Turma (codigo_aluno*, cod_curso*, data_matricula)
+Aluno (codigo_aluno*, nome_aluno, email_aluno, fone_contato)
+Curso (cod_curso*, nome_curso)
+
+Resposta: 
+Várias coleções
+
+{turma : {
+    id: 1,
+    curso: 3,
+    aluno: 2, 
+    data_matricula: "01/05/2019"
+}}
+
+{aluno : {
+    id: 2,
+    codigo_aluno: 2323,
+    nome_aluno: "Miriam",
+    email_aluno: "miriam@email.com",
+    fone_contato: "5555-3333"
+}}
+
+{curso : {
+    id: 3,
+    codigo_curso: 3232,
+    nome_curso: "AAAAAA"
+}}
+
+d)
+Consulta (num_paciente*,  data_consulta*, cod_medico*, dsc_diagnostico)
+Paciente (num_paciente*, nome_paciente)
+Medico (cod_medico*, nome_medico, cod_especialidade)
+Especialidade (cod_especialidade*, dsc_especialidade)
+
+Resposta: 
+Várias coleções
+{consulta :{
+    id: 1,
+    paciente: 2,
+    data_consulta: "09/06/2020"
+    medico: 3,
+    dsc_diagnostico: "Dor de cabeca"
+}}
+{paciente : {
+    id: 2,
+    num_paciente: 123,
+    nome_paciente: "Claudio"
+}}
+{medico : { 
+    id: 3,
+    cod_medico: 55,
+    nome_medico: "Mariano",
+    especialidade: 4 
+}}
+
+{especialidade :{
+    id: 4,
+    cod_especialidade:43,
+    dsc_especialidade: "pediatra"
+}}
+
+e)
+Emprestimo (num_matricula*, num_isbn*, dat_emprestimo*, dat_devolucao)
+Aluno (num_matricula*, nom_aluno)
+Livro (num_isbn*, tit_livro, num_paginas, cod_editora)
+Editora (cod_editora*, nom_editora)
+
+Resposta: 
+Várias coleções
+
+{emprestimo : {
+    id: 1,
+    matricula: 2,
+    isbn: 3,
+    dat_emprestimo: "05/06/2019",
+    dat_devolucao: "15/06/2019"     
+}}
+{aluno : {
+    id: 2,
+    num_matricula: 120,
+    nome_aluno: "Caio"
+}}
+{livro : {
+    id: 3,
+    num_isbn: 22222,
+    tit_livro: "Mascara postas",
+    num_paginas: 100,
+    editora: 4,
+}}
+{editora : {
+    id: 4,
+    cod_editora: 126,
+    nom_editora: "livros mascarados inc."
+}}
