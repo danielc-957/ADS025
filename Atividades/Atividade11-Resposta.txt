@@ -1,0 +1,448 @@
+Atividade 11
+Respostas:
+
+11. Crie as coleções com validação de esquema no MongoDB para cada modelo físico de banco de dados relacional.
+
+a)
+   PROJETO                                      
+   +----------------------------------+         GERENTE
+   |numero_projeto INT NOT NULL PK    |         +----------------------------------+
+   +----------------------------------+\        |numero_gerente INT NOT NULL PK    |
+   |nome_projeto VARCHAR(100) NOT NULL|---------+----------------------------------+
+   |data_inicio_projeto DATE          |/        |nome_gerente VARCHAR(100) NOT NULL|
+   |numero_gerente INT NOT NULL FK    |         +----------------------------------+
+   +----------------------------------+ 
+                        |                  
+                        |
+                        | 
+   PROJETO_EMPREGADO   /|\
+   +--------------------------------------------+
+   |numero_projeto INT NOT NULL PFK             |
+   |numero_empregado INT NOT NULL PFK           |
+   +--------------------------------------------+
+   |horas_trabalhadas_projeto SMALLINT DEFAULT 0|
+   +--------------------------------------------+
+                  \|/
+                   |
+                   |
+   EMPREGADO       |
+   +------------------------------------+         DEPARTAMENTO
+   |numero_empregado INT NOT NULL PK    |         +--------------------------------+
+   +------------------------------------+\        |numero_depto INT NOT NULL PK    |
+   |nome_empregado VARCHAR(100) NOT NULL|---------+--------------------------------+
+   |numero_depto INT FK                 |/        |nome_depto VARCHAR(100) NOT NULL|
+   +------------------------------------+         +--------------------------------+
+
+Resposta:
+/* chave _id */
+
+    db.createCollection("gerente", {
+        validator : { 
+            $jsonSchema : {
+                bsonType: "object", 
+                required: [ "nome_gerente" ],
+                properties: {
+                    "nome_gerente" : { bsonType: "string",maxLength: 100 }           
+                }
+            }
+        }
+    }
+
+    db.createCollection("projeto", {
+        validator : { 
+            $jsonSchema : {
+                bsonType: "object", 
+                required: [ "nome_projeto", "numero_gerente" ],
+                properties: {
+	     "nome_projeto" : { bsonType: "string",maxLength: 100 },
+                    "data_inicio_projeto" : { bsonType: "date" },
+                    "numero_gerente" : { bsonType: "objectId" }
+                }
+            }
+        }
+    }
+    
+    db.createCollection("dapartamento", {
+        validator : { 
+            $jsonSchema : {
+                bsonType: "object", 
+                required: [ "nome_depto"],
+                properties: {
+		"nome_depto" : { bsonType: "string",maxLength: 100 }
+                }
+            }
+        }
+    }
+
+    db.createCollection("empregado", {
+        validator : { 
+            $jsonSchema : {
+                bsonType: "object", 
+                required: [ "nome_empregado" ],
+                properties: {
+	     "nome_empregado" : { bsonType: "string",maxLength: 100 },
+                    "numero_depto" : { bsonType: "objectId" }
+                }
+            }
+        }
+    }
+
+    db.createCollection("projeto_empregado", {
+        validator : { 
+            $jsonSchema : {
+                bsonType: "object", 
+                required: [ "numero_projeto", "numero_empregado" ],
+                properties: {
+	     "numero_projeto" : { bsonType: "objectId" },
+                    "numero_empregado" : { bsonType: "objectId" },
+                    "horas_trabalhadas_projeto": {bsonType: "int", minimum: 0}
+                }
+            }
+        }
+    }
+
+b)
+   PEDIDO                                      
+   +----------------------------------------+         FORNECEDOR
+   |cod_pedido INT NOT NULL AI PK           |         +------------------------------------+
+   +----------------------------------------+\        |cod_fornecedor INT NOT NULL AI PK   |
+   |dat_emissao DATE NOT NULL               |---------+------------------------------------+
+   |cod_fornecedor INT NOT NULL FK          |/        |nom_fornecedor VARCHAR(100) NOT NULL|
+   |vlr_total_pedido DECIMAL(12,2) DEFAULT 0|         |end_fornecedor VARCHAR(100)         |
+   +----------------------------------------+         +------------------------------------+ 
+                        |                  
+                        |
+                        | 
+   PEDIDO_MATERIAL     /|\
+   +-----------------------------------------+
+   |cod_pedido INT NOT NULL PFK              |
+   |cod_material INT NOT NULL PFK            |
+   +-----------------------------------------+
+   |qtde_material SMALLINT NOT NULL CHECK > 0|
+   |vlr_material DECIMAL(12,2) NOT NULL      | 
+   +-----------------------------------------+
+                  \|/
+                   |
+                   |
+   MATERIAL        |
+   +-----------------------------------+
+   |cod_material INT NOT NULL AI PK    |
+   +-----------------------------------+
+   |dsc_material VARCHAR(100) NOT NULL |
+   |vlr_unitario DECIMAL(12,2) NOT NULL|            
+   +-----------------------------------+
+
+Resposta: 
+/* chave _id */
+
+    db.createCollection("material", {
+        validator : { 
+            $jsonSchema : {
+                bsonType: "object", 
+                required: [ "dsc_material", "vlr_unitario" ],
+                properties: {
+	     "dsc_material" : { bsonType: "string",maxLength: 100 },
+                    "vlr_unitario" : { bsonType: "double" }
+                }
+            }
+        }
+    }
+
+    db.createCollection("fornecedor", {
+        validator : { 
+            $jsonSchema : {
+                bsonType: "object", 
+                required: [ "nom_fornecedor" ],
+                properties: {
+	     "nom_fornecedor" : { bsonType: "string", maxLength: 100 },
+                    "end_fornecedor" : {  bsonType: "string", maxLength: 100 }
+                }
+            }
+        }
+    }
+
+    db.createCollection("pedido", {
+        validator : { 
+            $jsonSchema : {
+                bsonType: "object", 
+                required: [ "dat_emissao", "cod_fornecedor" ],
+                properties: {
+	     "dat_emissao" : { bsonType: "date" },
+                    "cod_fornecedor" : {  bsonType: "objectId" },
+                    "vlr_total_pedido" : { bsonType: "double"}
+                }
+            }
+        }
+    }
+
+    db.createCollection("pedido_material", {
+        validator : { 
+            $jsonSchema : {
+                bsonType: "object", 
+                required: [ "cod_pedido", "cod_material", "qtde_material" , "vlr_material" ],
+                properties: {
+	     "cod_pedido" : { bsonType: "objectId" },
+                    "cod_material" : {  bsonType: "objectId" },
+                    "qtde_material" : {  bsonType: "int", minimum: 1 },
+                    "vlr_material" : { bsonType: "double"}
+                }
+            }
+        }
+    }
+
+
+
+
+
+c)
+   CURSO                                      
+   +--------------------------------+
+   |id_curso INT AI PK              |
+   +--------------------------------+
+   |nome_curso VARCHAR(100) NOT NULL| 
+   |carga_horaria SMALLINT          |
+   +--------------------------------+ 
+                |                  
+                |
+                | 
+   TURMA       /|\
+   +----------------------------+
+   |id_turma INT NOT NULL AI PK |
+   +----------------------------+
+   |id_curso INT NOT NULL FK    |
+   |id_aluno INT NOT NULL FK    |
+   |data_matricula DATE NOT NULL| 
+   +----------------------------+
+               \|/
+                |
+                |
+   ALUNO        |
+   +--------------------------------+
+   |id_aluno INT NOT NULL AI PK     |
+   +--------------------------------+
+   |nome_aluno VARCHAR(100) NOT NULL|
+   |email_aluno VARCHAR(100)        |
+   |fone_contato CHAR(14)           |
+   +--------------------------------+
+
+Resposta: 
+/* chave _id */
+
+    db.createCollection("aluno", {
+        validator: {
+            $jsonSchema : {
+                bsonType: "object",
+                required: [ "nome_aluno" ],
+                properties: {
+	     "nome_aluno": {bsonType: "string" maxLength: 100},
+                    "email_aluno": {bsonType: "string", maxLength: 100},
+                    "fone_contato": {bsonType: "string", maxLength: 14} 
+                }
+            }
+        }
+    })
+
+    db.createCollection("curso", {
+        validator: {
+            $jsonScohema : {
+                bsonType: "object",
+                required: [ "nome_curso" ],
+                properties: {
+                    "nome_curso": {bsonType: "string", maxLength: 100},
+                    "carga_horaria": {bsonType: "int", minimum: 0}
+                }
+            }
+        }
+    })
+
+
+    db.createCollection("turma", {
+        validator: {
+            $jsonSchema : {
+                bsonType: "object",
+                required: [ "id_curso", "id_aluno", "data_matricula" ],
+                properties: {
+                    "id_curso": {bsonType: "objectId"},
+                    "id_aluno": {bsonType: "objectId"},
+                    "data_matricula": {bsonType: "date"}
+                }
+            }
+        }
+    })
+
+
+
+
+d)
+   MEDICO                                      
+   +---------------------------------+        ESPECIALIDADE
+   |cod_medico INT AI PK             |        +---------------------------------------+
+   +---------------------------------+\       |cod_especialidade INT NOT NULL PK      |
+   |nome_medico VARCHAR(100) NOT NULL|--------+---------------------------------------+ 
+   |cod_especialidade INT NOT NULL FK|/       |dsc_especialidade VARCHAR(100) NOT NULL| 
+   +---------------------------------+        +---------------------------------------+
+                |                  
+                |
+                | 
+   CONSULTA    /|\
+   +------------------------------+
+   |id_consulta INT NOT NULL AI PK|
+   +------------------------------+
+   |id_medico INT NOT NULL FK     |
+   |id_paciente INT NOT NULL FK   |
+   |data_consulta DATE NOT NULL   | 
+   +------------------------------+
+               \|/
+                |
+                |
+   PACIENTE     |
+   +-----------------------------------+
+   |id_paciente INT NOT NULL AI PK     |
+   +-----------------------------------+
+   |nome_paciente VARCHAR(100) NOT NULL|
+   +-----------------------------------+
+
+    Resposta:
+     
+    db.createCollection("especialidade", {
+        validator: {
+            $jsonSchema : {
+                bsonType: "object",
+                required: [ "dsc_especialidade" ],
+                properties: {
+	     "dsc_especialidade": {bsonType: "string" maxLength: 100}
+                }
+            }
+        }
+    })
+
+    db.createCollection("medico", {
+        validator: {
+            $jsonSchema : {
+                bsonType: "object",
+                required: [ "nome_medico", "cod_especialidade" ],
+                properties: {
+                    "nome_medico": {bsonType: "string" maxLength: 100},
+                    "cod_especialidade": {bsonType: "objectId"}
+                }
+            }
+        }
+    })
+
+    db.createCollection("paciente", {
+        validator: {
+            $jsonSchema : {
+                bsonType: "object",
+                required: [ "nome_paciente" ],
+                properties: {
+	     "nome_paciente": {bsonType: "string" maxLength: 100}
+                }
+            }
+        }
+    })
+
+    db.createCollection("consulta", {
+        validator: {
+            $jsonSchema : {
+                bsonType: "object",
+                required: [ "id_medico", "id_paciente", "data_consulta" ],
+                properties: {
+                    "id_medico": {bsonType: "objectId"},
+                    "id_paciente": {bsonType: "objectId"},
+                    "data_consulta": {bsonType: "date"}
+                }
+            }
+        }
+    })
+
+
+e)
+   LIVRO                                      
+   +---------------------------------+        EDITORA
+   |id_livro INT AI PK               |        +---------------------------------+
+   +---------------------------------+\       |cod_editora INT NOT NULL AI PK   |
+   |num_isbn CHAR(13) NOT NULL UNIQUE|--------+---------------------------------+ 
+   |tit_livro VARCHAR(100) NOT NULL  |/       |nom_editora VARCHAR(100) NOT NULL| 
+   |num_paginas SMALLINT CHECK > 0   |        +---------------------------------+
+   |cod_editora INT NOT NULL FK      |
+   +---------------------------------+        
+                |                  
+                |
+                | 
+   EMPRESTIMO  /|\
+   +---------------------------------+
+   |id_emprestimo INT NOT NULL AI PK |
+   +---------------------------------+
+   |id_livro INT NOT NULL FK         |
+   |id_aluno INT NOT NULL FK         |
+   |dat_emprestimo DATE NOT NULL     | 
+   |dat_devolucao DATE               | 
+   +---------------------------------+
+               \|/
+                |
+                |
+   ALUNO        |
+   +---------------------------------+
+   |id_aluno INT NOT NULL AI PK      |
+   +---------------------------------+
+   |num_matricula INT NOT NULL UNIQUE|
+   |nom_aluno VARCHAR(100) NOT NULL  |
+   +---------------------------------+
+
+    Resposta:
+    /* chave _id */
+
+    db.createCollection("editora", {
+        validator: {
+            $jsonSchema : {
+                bsonType: "object",
+                required: [ "nome_editora" ],
+                properties: {
+	     "nome_editora": {bsonType: "string" maxLength: 100}
+                }
+            }
+        }
+    })
+    
+    db.createCollection("livro", {
+        validator: {
+            $jsonSchema : {
+                bsonType: "object",
+                required: [ "num_isbn", "tit_livro", "cod_editora" ],
+                properties: {
+                    "num_isbn": {bsonType: "string" maxLength: 13},
+                    "tit_livro": {bsonType: "string" maxLength: 100},
+                    "num_paginas": {bsonType: "int", minimum: 0},
+                    "cod_editora": {bsonType: "objectId"}
+                }
+            }
+        }
+    })
+
+    db.createCollection("aluno", {
+        validator: {
+            $jsonSchema : {
+                bsonType: "object",
+                required: [ "num_matricula","nom_aluno"],
+                properties: {
+                    "num_matricula": {bsonType: "int"},
+                    "nom_aluno": {bsonType: "string",maxLength: 100}
+                }
+            }
+        }
+    })
+    
+    db.createCollection("emprestimo", {
+        validator: {
+            $jsonSchema : {
+                bsonType: "object",
+                required: [ "id_livro", "id_aluno", "dat_emprestimo" ],
+                properties: {
+                    "id_livro": {bsonType: "objectId"},
+                    "id_aluno": {bsonType: "objectId"},
+                    "data_emprestimo": {bsonType: "date"},
+                    "data_devolucao": {bsonType: "date"}
+                }
+            }
+        }
+    })
